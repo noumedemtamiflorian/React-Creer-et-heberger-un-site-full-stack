@@ -8,16 +8,22 @@ dotenv.config()
 
 const uri = process.env.DATABASE_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-client.connect(err => {
-    // const collection = client.db("test").collection("devices");
-    // // perform actions on the collection object
-    console.log("Connecte avec succes a la base de donnee");
-    client.close();
-});
-
 
 app.get("/", (_, res) => {
-    res.send("Hello Express")
+    client.connect((err, db) => {
+
+        console.log("Connecte avec succes a la base de donnee");
+        if (err || !db) { return false }
+        const posts = db.db("blog").collection("posts");
+
+        posts.find().toArray((err, results) => {
+            if (!err) {
+                console.log(results);
+                res.status(200).send(results)
+            }
+        })
+
+    });
 })
 
 app.listen(port, () => {
