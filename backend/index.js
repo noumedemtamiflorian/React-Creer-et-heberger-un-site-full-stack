@@ -4,6 +4,8 @@ import dotenv from "dotenv"
 
 const app = express();
 const port = 4000
+
+app.use(express.json())
 dotenv.config()
 
 const uri = process.env.DATABASE_URI;
@@ -18,12 +20,24 @@ app.get("/", (_, res) => {
 
         posts.find().toArray((err, results) => {
             if (!err) {
-                console.log(results);
                 res.status(200).send(results)
             }
         })
 
     });
+})
+
+
+app.post("/insert", (req, res) => {
+
+    client.connect((err, db) => {
+        if (err || !db) return false
+        db.db("blog").collection("posts").insertOne(req.body, (err, results) => {
+            if (!err) {
+                res.status(200).send(results)
+            }
+        })
+    })
 })
 
 app.listen(port, () => {
