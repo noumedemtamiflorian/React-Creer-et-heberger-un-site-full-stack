@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, useState } from "react";
-import { getPosts } from "../service";
+import { getPosts, insertPosts } from "../service";
 
 const AppContext = createContext()
 const { Provider } = AppContext
@@ -12,10 +12,15 @@ export const AppProvider = ({ children }) => {
         getPosts().then(setPosts)
     }
 
+    const addPost = (body) => {
+        insertPosts(body).then(setPosts)
+    }
+
     const value = useMemo(() => {
         return {
             posts,
-            fetchPosts
+            fetchPosts,
+            addPost
         }
     }, [posts])
 
