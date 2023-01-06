@@ -1,5 +1,5 @@
 import React from "react"
-import { useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { useAppContext } from "../context"
 
 export default function Single() {
@@ -7,6 +7,7 @@ export default function Single() {
     const params = useLocation()
     const post = posts.find(post => post._id === params?.state?.id)
     return (<>
+        <Link to="/">back</Link>
         <h1>{post?.title}</h1>
         <p>{post?.content}</p>
     </>)
