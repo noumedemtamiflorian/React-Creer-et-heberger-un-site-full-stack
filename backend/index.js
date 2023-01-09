@@ -46,4 +46,4 @@ app.post("/insert", (req, res) => {
 
 app.listen(port, () => {
     console.log("Serveur demarre avec success sur le port 4000");
-}) 
+})
